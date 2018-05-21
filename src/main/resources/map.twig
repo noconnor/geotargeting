@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title></title>
+    <script src="http://maps.google.com/maps/api/js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDx4vFIsZ9S_0kx7DJm4qpHIeJ51euNgjw"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.js"></script>
+    <style type="text/css">
+        #map {
+            height: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    // TODO: inject notification data here
+    var json = {{ json_encode(data) }}
+    // hot spot
+    var map = new GMaps({
+        el: '#map',
+        lat: 53.339428,
+        lng: -6.257664,
+        zoom: 7
+    });
+
+    for (var i = 0; i < json.length; i++ ) {
+        var notification = json[i];
+
+        var icon = notification.invited ? "http://maps.google.com/mapfiles/ms/icons/red-dot.png" : "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+
+        var marker = map.addMarker({
+            lat: notification.user.latitude,
+            lng: notification.user.longitude,
+            title: notification.user.name,
+            icon: icon,
+            infoWindow: {
+                content: notification.message
+            }
+        });
+    }
+
+    map.drawCircle({
+        lat: 53.339428,
+        lng: -6.257664,
+        radius: 100000,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.9,
+        strokeWeight: 1,
+        fillColor: '#FF0000',
+        fillOpacity: 0.15
+    })
+
+</script>
+</body>
+</html>
